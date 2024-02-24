@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benvenuto in BiGen</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { width: 80%; max-width: 1920px; height: 90vh; background-color: #fff; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+        .header { padding: 20px; background-color: #007bff; color: white; position: relative; }
+        .menu { padding: 10px; list-style-type: none; display: flex; justify-content: space-around; margin: 0; background-color: #f4f4f4; }
+        .menu li a { text-decoration: none; color: #007bff; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; }
+        .menu li a:hover, .menu li a.active { background-color: #0056b3; color: white; }
+        .content { flex-grow: 1; padding: 20px; overflow-y: auto; }
+        iframe { width: 100%; height: 73vh; border: none; }
+        .responsive-iframe-container { position: relative; overflow: hidden; padding-top: 56.25%; height: 0; }
+        .responsive-iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .login-form { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        input[type="text"], input[type="password"], input[type="submit"] { padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; width: calc(100% - 22px); }
+        input[type="submit"] { background-color: #007bff; color: white; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        .hidden { display: none; }
+        #logoutButton { float: right; margin-right: 20px; padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <div class="container" id="loginContainer">
+        <div class="login-form">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="submit" value="Login" onclick="checkLogin()">
+            <p id="loginStatus"></p>
+        </div>
+    </div>
+    <div class="container hidden" id="welcomeContainer">
+        <div class="header">
+            Benvenuto in BiGen
+            <button id="logoutButton" onclick="logout()">Logout</button>
+        </div>
+        <ul class="menu">
+            <li><a href="#" onclick="showSection('section0')">Home</a></li>
+            <li><a href="#" onclick="showSection('section1')">Comitato Acquisti</a></li>
+            <li><a href="#" onclick="showSection('section2')">Livello Servizio Fornitore</a></li>
+            <li><a href="#" onclick="showSection('section3')">Vendite Italia</a></li>
+            <li><a href="#" onclick="showSection('section4')">Sezione 4</a></li>
+        </ul>
+        <div class="content" id="content">
+            <div id="section0" class="hidden">Benvenuto nella Home di BiGen</div>
+            <div id="section1" class="hidden"><iframe title="Comitato Acquisti" width="600" height="375.5" src="https://app.powerbi.com/view?r=eyJrIjoiMTJmZWNmNTMtZTYwZS00YjQwLWI4M2YtZTdmYjIwZDM0OTVmIiwidCI6ImIxZWU2NzZkLTM2ZWMtNDUyNS1iMGE5LTE4MmNkOGUyNDY4NiIsImMiOjl9" frameborder="0" allowFullScreen="true"></iframe></div>
+            <div id="section2" class="hidden"><iframe title="Livello servizio Fornitore_v3" src="https://app.powerbi.com/view?r=eyJrIjoiNWViYTNiMjktYTA5ZS00M2FiLWFmYjQtZTUzOWI1MjZmMzEyIiwidCI6ImIxZWU2NzZkLTM2ZWMtNDUyNS1iMGE5LTE4MmNkOGUyNDY4NiIsImMiOjl9" frameborder="0" allowFullScreen="true"></iframe></div>
+            <div id="section3" class="hidden"><iframe title="Gen_Set 22_23v2 2024" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZmE1YmRhZWItYzFjNS00MGU2LTk0YjAtN2QwNzQ0MWFiYTQ4IiwidCI6ImIxZWU2NzZkLTM2ZWMtNDUyNS1iMGE5LTE4MmNkOGUyNDY4NiIsImMiOjl9" frameborder="0" allowFullScreen="true"></iframe></div>
+            <div id="section4" class="hidden">Contenuto della Sezione 4</div>
+        </div>
+    </div>
+    <script>
+        function checkLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            if(username === "admin" && password === "adminlorenzo") {
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('welcomeContainer').classList.remove('hidden');
+            } else if (username === "utente" && password === "utente1") {
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('welcomeContainer').classList.remove('hidden');
+                // Nascondi tutte le sezioni tranne "Home"
+                document.querySelectorAll('.menu li').forEach((li, index) => li.style.display = index === 0 ? '' : 'none');
+                showSection('section0'); // Mostra la sezione "Home"
+            } else {
+                document.getElementById('loginStatus').textContent = "Invalid credentials!";
+                document.getElementById('loginContainer').classList.remove('hidden');
+                document.getElementById('welcomeContainer').classList.add('hidden');
+            }
+        }
+
+        function logout() {
+            document.getElementById('welcomeContainer').classList.add('hidden');
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('loginStatus').textContent = ""; // Resetta il messaggio di stato del login
+            document.getElementById('username').value = ""; // Resetta il campo username
+            document.getElementById('password').value = ""; // Resetta il campo password
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content > div').forEach(section => section.classList.add('hidden'));
+            document.querySelectorAll('.menu li a').forEach(link => link.classList.remove('active'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.querySelectorAll('.menu li a').forEach(link => {
+                if (link.getAttribute('onclick').includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function adjustIframeHeight() {
+            var contentHeight = document.getElementById('content').offsetHeight;
+            var iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => {
+                iframe.style.height = `${contentHeight}px`;
+            });
+        }
+
+        window.addEventListener('resize', adjustIframeHeight);
+    </script>
+</body>
+</html>
